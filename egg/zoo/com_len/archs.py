@@ -27,20 +27,6 @@ class Sender(nn.Module):
             ) for _ in range(com_len)]
         )
         
-#         self.gs = nn.ModuleList([
-#             GumbelSoftmaxLayer(
-#                 temperature=temperature, 
-#                 straight_through=straight_through
-#             ) for _ in range(com_len)]
-#         )
-        
-#         self.out = nn.ModuleList([
-#             nn.Linear(vocab_size, embed_dim, bias=False)
-#             for _ in range(com_len)]
-#         )
-        
-#         self.com_len = com_len
-    
     def train(self, mode=True):
         self.training = mode
         for module in self.children():
@@ -50,21 +36,6 @@ class Sender(nn.Module):
     def forward(self, x, aux_input=None):
         vision_module_out = self.vision_module(x)
         
-#         message = [
-#             self.fc[i](vision_module_out) 
-#             for i in range(self.com_len)
-#         ]
-        
-#         message = [
-#             self.gs[i](message[i])
-#             for i in range(self.com_len)
-#         ]
-        
-#         message = [
-#             self.out[i](message[i]) 
-#             for i in range(self.com_len)
-#         ]
-
         message = [layer(vision_module_out) for layer in self.com_module]
         
         message = torch.cat(message, dim=1)
