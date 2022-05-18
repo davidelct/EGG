@@ -22,9 +22,13 @@ class Sender(nn.Module):
                 GumbelSoftmaxLayer(
                     temperature=temperature, 
                     straight_through=straight_through
-                ),
-                RelaxedEmbedding(vocab_size, embed_dim)
+                )
             ) for _ in range(com_len)]
+        )
+        
+        self.embed_module = nn.ModuleList([
+            RelaxedEmbedding(vocab_size, embed_dim)
+            for _ in range(com_len)]
         )
         
     def train(self, mode=True):
@@ -37,10 +41,12 @@ class Sender(nn.Module):
         vision_module_out = self.vision_module(x)
         
         message = [layer(vision_module_out) for layer in self.com_module]
+        embedded_message = [layer(message) for layer in self.embed_module]
         
         message = torch.cat(message, dim=1)
+        embedded_message = torch.cat(embedded_message, dim=1)
         
-        return message
+        return embedded_message, message
 
 
 class Receiver(nn.Module):
@@ -108,10 +114,10 @@ class Game(nn.Module):
     def forward(self, sender, receiver, loss, sender_input, labels, 
                 receiver_input=None, aux_input=None):
         
-        message = sender(sender_input, aux_input)
-        receiver_output = receiver(message, receiver_input, aux_input)
+        embedded_message, message = sender(sender_input, aux_input)
+        receiver_output = receiver(embedded_message, receiver_input, aux_input)
 
-        loss, aux_info = loss(sender_input, message, receiver_input,
+        loss, aux_info = loss(sender_input, embedded_message, receiver_input,
             receiver_output, labels, aux_input
         )
         
