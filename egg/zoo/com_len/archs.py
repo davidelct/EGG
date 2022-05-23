@@ -127,10 +127,10 @@ class Game(nn.Module):
 
         interaction = logging_strategy.filtered_interaction(
             sender_input=sender_input,
-            receiver_input=receiver_input,
-            labels=labels,
+            receiver_input=receiver_input.detach(),
+            labels=labels.detach(),
             aux_input=aux_input,
-            receiver_output=receiver_output,
+            receiver_output=receiver_output.detach(),
             message=message.detach(),
             message_length=None,
             aux=aux_info,
