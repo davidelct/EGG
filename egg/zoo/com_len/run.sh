@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-#SBATCH -J N1V512
-#SBATCH -o N1V512.out
-#SBATCH -e N1V512.err
+#SBATCH -J N2V25
+#SBATCH -o N2V25.out
+#SBATCH -e N2V25.err
 #
 #SBATCH --mail-user davide.locatelli@upc.edu
 #SBATCH --mail-type FAIL
@@ -16,5 +16,5 @@
 
 source /home/usuaris/locatelli/.bashrc
 conda activate egg-env
-python3 train.py --checkpoint_dir="N1V512" --checkpoint_freq=5 --batch_size=64 --vocab_size=512 --com_len=1 --lr=0.0001 --n_epochs=10
+python3 train.py --checkpoint_dir="N2V25" --checkpoint_freq=5 --batch_size=64 --vocab_size=25 --com_len=2 --lr=0.0001 --n_epochs=10
 conda deactivate
