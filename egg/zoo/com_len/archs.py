@@ -42,7 +42,7 @@ class Sender(nn.Module):
         vision_module_out = self.vision_module(x)
         
         message = [layer(vision_module_out) for layer in self.com_module]
-        embedded_message = [self.embed_module[i](message([i]) for i in range(self.com_len)]
+        embedded_message = [self.embed_module[i](message[i]) for i in range(self.com_len)]
         
         message = torch.cat(message, dim=1)                              
         embedded_message = torch.cat(embedded_message, dim=1)
