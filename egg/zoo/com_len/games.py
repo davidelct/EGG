@@ -91,8 +91,8 @@ def build_game(opts):
     )
     
     test_logging_strategy = LoggingStrategy(
-        store_sender_input = False,
-        store_receiver_input = False,
+        store_sender_input = True,
+        store_receiver_input = True,
         store_labels = True,
         store_aux_input = True,
         store_message = True,
