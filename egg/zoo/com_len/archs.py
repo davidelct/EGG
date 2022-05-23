@@ -27,7 +27,7 @@ class Sender(nn.Module):
         )
         
         self.embed_module = nn.ModuleList([
-            RelaxedEmbedding(vocab_size, embed_dim)
+            RelaxedEmbedding(vocab_size*com_len, embed_dim)
             for _ in range(com_len)]
         )
         
