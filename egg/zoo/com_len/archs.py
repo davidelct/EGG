@@ -27,9 +27,10 @@ class Sender(nn.Module):
         )
         
         self.embed_module = nn.ModuleList([
-            RelaxedEmbedding(vocab_size*com_len, embed_dim)
+            RelaxedEmbedding(vocab_size, embed_dim)
             for _ in range(com_len)]
         )
+        self.com_len = com_len
         
     def train(self, mode=True):
         self.training = mode
@@ -41,9 +42,9 @@ class Sender(nn.Module):
         vision_module_out = self.vision_module(x)
         
         message = [layer(vision_module_out) for layer in self.com_module]
-        message = torch.cat(message, dim=1)
+        embedded_message = [self.embed_module[i](message([i]) for i in range(self.com_len)]
         
-        embedded_message = [layer(message) for layer in self.embed_module] 
+        message = torch.cat(message, dim=1)                              
         embedded_message = torch.cat(embedded_message, dim=1)
         
         return embedded_message, message
