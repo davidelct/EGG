@@ -16,5 +16,5 @@
 
 source /home/usuaris/locatelli/.bashrc
 conda activate egg-env
-python3 train.py --checkpoint_dir="N1V512" --checkpoint_freq=5 --batch_size=64 --vocab_size=512 --com_len=1 --lr=0.0001 --n_epochs=20
+python3 train.py --checkpoint_dir="N1V512" --checkpoint_freq=5 --batch_size=64 --vocab_size=512 --com_len=1 --lr=0.0001 --n_epochs=10
 conda deactivate
